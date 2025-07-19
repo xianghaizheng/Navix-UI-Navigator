@@ -55,5 +55,5 @@ app.exec()
 ## Documentation
 - [Demo Examples](demo/)
 - [Full Documentation (HTML)](doc/qmx_full_documentation.html)
-- 
+  
 MIT License © 2024 Xiang Haizheng
