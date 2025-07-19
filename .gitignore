@@ -3,3 +3,6 @@
 
 # Ignore GitHub Actions workflows (如果你不想上传CI脚本)
 .github/
+
+# Ignore Python cache files
+__pycache__/
