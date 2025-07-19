@@ -41,8 +41,7 @@ app.exec()
 
 ```python
 from Navix import container_manager, container_property, route_validator, UIVoyager, navigate
-from enum import Enum
-from PySide6 import QtWidgets
+...
 
 class DataRoutes(Enum):
     SETTINGS = "data.settings"
@@ -63,9 +62,47 @@ container.set("theme", "dark")
 theme = container.get("theme")
 ```
 
+## Builder API Example
+
+```python
+from Navix.builders import Navix_app
+...
+class BuilderRoutes(Enum):
+    MAIN = "builder.main"
+    SETTINGS = "builder.settings"
+
+@navigate(BuilderRoutes.MAIN)
+class MainWindow(QtWidgets.QWidget):
+    ...
+@navigate(BuilderRoutes.SETTINGS)
+class SettingsDialog(QtWidgets.QDialog):
+    ...
+def startup_hook(app): ...
+def shutdown_hook(app):...
+
+app = (
+    Navix_app("Navix Builder Demo")
+    .config(theme="light")
+    .startup_hook(startup_hook)
+    .shutdown_hook(shutdown_hook)
+    .framework("PySide6")
+    .routes(BuilderRoutes)
+    .main_window(BuilderRoutes.MAIN)
+    .import_ui_modules(__name__)
+    .validation()
+        .patterns(r'^builder\.[a-z_]+$')
+        .parameters("theme", lambda x: x in ("light", "dark"))
+        .security_checker(lambda route, params, param_names: True)
+        .end()
+    ...
+    .build()
+)
+app.run()
+```
+
 ## Documentation
 - [Demo Examples](demo/)
-- [Full Documentation (HTML, Download & open in browser)](docs/qmx_full_documentation.html)
+- [Full Documentation (HTML, open in browser)](docs/navix_full_documentation.html)
 
 ## License
 
