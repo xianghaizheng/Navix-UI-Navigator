@@ -1,4 +1,5 @@
 # Navix UI Navigator
+
 Modular, Type-Safe UI Routing & Navigation Framework for Python Desktop Applications.
 
 ## Features
@@ -12,24 +13,8 @@ Modular, Type-Safe UI Routing & Navigation Framework for Python Desktop Applicat
 - Extensible via protocols, ABCs, custom interceptors
 - Rich documentation and examples
 
-## Data Container System (Highlight)
-
-Navix's data container system enables safe, structured, and IDE-friendly data sharing across all UI components.
-
-- **Auto-registration**: Each route gets a global container for data exchange.
-- **Type-safe declaration**: Use `@container_property(type, default, desc)` for IDE completion and type checking.
-- **Access**: `container_manager(route_enum_member)` or `container_manager.module.route.property` for safe access.
-- **Features**: Module/global data, status monitoring, auto cleanup.
-
-
-## Installation
-
-```bash
-pip install -r requirements.txt
-# Or add Navix to your PYTHONPATH
-```
-
 ## Quick Start
+
 ```python
 from enum import Enum
 from Navix import navigate, UIVoyager, setup_navigator
@@ -52,8 +37,36 @@ win.show()
 app.exec()
 ```
 
+## Advanced Features Example
+
+```python
+from Navix import container_manager, container_property, route_validator, UIVoyager, navigate
+from enum import Enum
+from PySide6 import QtWidgets
+
+class DataRoutes(Enum):
+    SETTINGS = "data.settings"
+
+@navigate(DataRoutes.SETTINGS)
+class SettingsDialog(QtWidgets.QDialog):
+    @container_property(str, "light", "Theme setting")
+    def theme(self): pass
+
+# Add route validation and security
+voyager = UIVoyager()
+voyager.add_route_pattern(r'^data\.[a-z_]+$')
+voyager.add_parameter_rule('theme', lambda x: x in ('light', 'dark'))
+
+# Use data container for cross-UI sharing
+container = container_manager(DataRoutes.SETTINGS)
+container.set("theme", "dark")
+theme = container.get("theme")
+```
+
 ## Documentation
 - [Demo Examples](demo/)
 - [Full Documentation (HTML)](doc/qmx_full_documentation.html)
-  
+
+## License
+
 MIT License © 2024 Xiang Haizheng

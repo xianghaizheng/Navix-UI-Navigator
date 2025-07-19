@@ -1,0 +1,5 @@
+# Ignore VSCode settings
+.vscode/
+
+# Ignore GitHub Actions workflows (如果你不想上传CI脚本)
+.github/
