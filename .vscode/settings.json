@@ -1,0 +1,24 @@
+{
+    "python.analysis.extraPaths": [
+        "${workspaceFolder}/..",
+        "${workspaceFolder}"
+    ],
+    "python.autoComplete.extraPaths": [
+        "${workspaceFolder}/..",
+        "${workspaceFolder}"
+    ],
+    "python.analysis.autoImportCompletions": true,
+    "python.analysis.autoSearchPaths": true,
+    "python.analysis.diagnosticMode": "workspace",
+    "python.analysis.typeCheckingMode": "off",
+    "python.terminal.activateEnvironment": true,
+    "python.envFile": "${workspaceFolder}/.env",
+    "files.exclude": {
+        "**/__pycache__": true,
+        "**/*.pyc": true
+    },
+    "editor.rulers": [88],
+    "python.formatting.provider": "black",
+    "python.analysis.stubPath": "${workspaceFolder}/..",
+    "python.linting.enabled": false
+}

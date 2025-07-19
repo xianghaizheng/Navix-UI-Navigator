@@ -1,0 +1,67 @@
+{
+    "DefaultConfig": {
+        "app_name"        : "Navix Application",
+        "version"         : "1.0.0",
+        "data_directory"  : "./data"
+    },
+   
+    "GuiFrameworks": {
+        "PyQt6"    : 
+        {   "module_name"      : "PyQt6.QtWidgets", 
+            "widget_class"     : "QWidget", 
+            "application_class": "QApplication",
+            "main_window_class" : "QMainWindow",
+            "main_loop"         : "exec",
+            "version"           : "6.0.0"
+        },
+
+        "PyQt5"    : 
+        {   "module_name"      : "PyQt5.QtWidgets", 
+            "widget_class"     : "QWidget", 
+            "application_class": "QApplication",
+            "main_window_class" : "QMainWindow",
+            "main_loop"         : "exec",
+            "version"           : "5.15.0"
+        },
+        "PySide6"  : 
+        {   "module_name"      : "PySide6.QtWidgets", 
+            "widget_class"     : "QWidget", 
+            "application_class": "QApplication",
+            "main_window_class" : "QMainWindow",
+            "main_loop"         : "exec",
+            "version"           : "6.0.0"
+        },
+        "PySide2"  : 
+        {   "module_name"      : "PySide2.QtWidgets", 
+            "widget_class"     : "QWidget", 
+            "application_class": "QApplication",
+            "main_window_class" : "QMainWindow",
+            "main_loop"         : "exec",
+            "version"           : "5.15.0"
+        },
+        "Kivy"     : 
+        {   "module_name"      : "kivy.app", 
+            "widget_class"     : "Widget", 
+            "application_class": "App",
+            "main_window_class" : "Window",
+            "main_loop"         : "run",
+            "version"           : "2.0.0"
+        },
+        "wxPython" : 
+        {   "module_name"      : "wx", 
+            "widget_class"     : "Panel", 
+            "application_class": "App",
+            "main_window_class" : "Frame",
+            "main_loop"         : "MainLoop",
+            "version"           : "4.1.0"
+        },
+        "tkinter"  : 
+        {   "module_name"      : "tkinter", 
+            "widget_class"     : "Widget", 
+            "application_class": "Tk",
+            "main_window_class" : "Toplevel",
+            "main_loop"         : "mainloop",
+            "version"           : "8.6"
+        }
+    }
+}

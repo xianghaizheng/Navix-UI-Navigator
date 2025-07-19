@@ -1,0 +1,707 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Navix UI Navigator - Complete Documentation</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+        body { font-family: "Segoe UI", Arial, sans-serif; margin: 0; padding: 0; background: #f9f9f9; }
+        header, nav, main, footer { max-width: 900px; margin: auto; }
+        header { background: #222; color: #fff; padding: 30px 20px 10px 20px; }
+        nav { background: #eee; padding: 10px 20px; }
+        nav ul { list-style: none; padding: 0; margin: 0; display: flex; flex-wrap: wrap; }
+        nav li { margin-right: 20px; }
+        nav a { color: #222; text-decoration: none; font-weight: bold; }
+        nav a:hover { text-decoration: underline; }
+        main { background: #fff; padding: 30px 30px 40px 30px; }
+        h2, h3, h4 { color: #1a3a5e; }
+        pre, code { background: #f4f4f4; border-radius: 4px; padding: 2px 6px; }
+        pre { padding: 10px; overflow-x: auto; }
+        table { border-collapse: collapse; width: 100%; margin-bottom: 20px; }
+        th, td { border: 1px solid #ddd; padding: 6px 10px; }
+        th { background: #f0f0f0; }
+        .toc { background: #f6f6f6; border: 1px solid #ddd; padding: 10px 20px; margin-bottom: 30px; }
+        .api-table th, .api-table td { font-size: 14px; }
+        footer { background: #222; color: #fff; text-align: center; padding: 20px 0; margin-top: 40px; }
+        .note { background: #e7f3fe; border-left: 4px solid #2196F3; padding: 8px 16px; margin: 10px 0; }
+        .warning { background: #fff3cd; border-left: 4px solid #ff9800; padding: 8px 16px; margin: 10px 0; }
+    </style>
+</head>
+<body>
+<header>
+    <h1>Navix UI Navigator</h1>
+    <p> Modular, Type-Safe UI Routing & Navigation Framework for Python Desktop Applications</p>
+    <p style="font-size: 14px; color: #ccc;">Version 1.0.0 &nbsp;|&nbsp; Author: Xiang Haizheng </p>
+</header>
+
+<main>
+    <div class="toc">
+        <b>Table of Contents</b>
+        <ul>
+            <li><a href="#introduction">1. Introduction</a></li>
+            <li><a href="#architecture">2. Architecture & Design</a></li>
+            <li><a href="#quickstart">3. Quick Start</a></li>
+            <li><a href="#routing">4. Routing System</a></li>
+            <li><a href="#navigation">5. Navigation Manager</a></li>
+            <li><a href="#data-containers">6. Data Containers</a></li>
+            <li><a href="#validation-security">7. Validation & Security</a></li>
+            <li><a href="#builder-api">8. Builder API</a></li>
+            <li><a href="#adapters">9. GUI Adapters</a></li>
+            <li><a href="#interfaces">10. Interfaces & Extensibility</a></li>
+            <li><a href="#interceptors">11. Interceptors</a></li>
+            <li><a href="#api-reference">12. API Reference</a></li>
+            <li><a href="#faq">13. FAQ</a></li>
+            <li><a href="#examples">14. Examples</a></li>
+            <li><a href="#license">15. License</a></li>
+        </ul>
+    </div>
+
+    <h2 id="introduction">1. Introduction</h2>
+    <p>
+        <b>Navix UI Navigator</b> is a modular, extensible UI routing and navigation framework for Python desktop applications. It provides a unified, type-safe solution for managing multi-window applications across <b>PyQt5/6, PySide2/6, wxPython, and tkinter</b>.
+    </p>
+    <ul>
+        <li>Enum-based routing (see <code>demo/01_simple_navigation.py</code>, <code>demo/05_builder_full.py</code>)</li>
+        <li>Centralized navigation manager with singleton/multi-instance support (<code>UIVoyager</code>)</li>
+        <li>Type-safe, cross-UI data containers (<code>container_manager</code>, <code>demo/02_data_container.py</code>)</li>
+        <li>Validation and security rules for professional applications (<code>demo/03_validation_security.py</code>, <code>demo/06_rbac_enterprise.py</code>)</li>
+        <li>Fluent builder API for configuration (<code>demo/05_builder_full.py</code>)</li>
+        <li>Unified widget wrappers for major Python GUI frameworks (<code>WidgetWrapper</code>, <code>demo/07_adapter_framework.py</code>)</li>
+        <li>Extensible via protocols, ABCs, and custom interceptors (<code>demo/08_protocol_extension.py</code>, <code>demo/04_interceptor_eventbus.py</code>)</li>
+    </ul>
+    <div class="note">
+        <b>Who should use Navix?</b> <br>
+        - Cgi Vfx Teams<br>
+        - Python desktop developers<br>
+        - Teams needing modular, maintainable UI architecture<br>
+        - Anyone building multi-window Python applications
+    </div>
+
+    <h2 id="architecture">2. Architecture & Design</h2>
+    <ul>
+        <li><b>Routing:</b> Enum-based, modular, auto-discovery, conflict detection</li>
+        <li><b>Navigation:</b> Central manager, singleton, history, validation, security</li>
+        <li><b>Data Containers:</b> Type-safe, auto-registered, cross-UI sharing</li>
+        <li><b>Validation & Security:</b> Route/parameter validation, security rules, interceptors</li>
+        <li><b>Builder API:</b> Chainable configuration</li>
+        <li><b>Adapters:</b> Unified widget interface for major Python GUI frameworks</li>
+        <li><b>Extensibility:</b> Protocols, ABCs, custom interceptors, hooks</li>
+        <li><b>IDE Friendly:</b> Type hints, auto-completion, code navigation</li>
+    </ul>
+    <h3>Supported Frameworks</h3>
+    <ul>
+        <li>PyQt5 / PyQt6</li>
+        <li>PySide2 / PySide6</li>
+        <li>wxPython</li>
+        <li>tkinter</li>
+    </ul>
+    <h3>Project Structure</h3>
+    <pre><code>Navix/
+  adapters/
+  builders/
+  data_container/
+  exceptions/
+  interfaces/
+  navigation/
+  routing/
+  validation/
+  security/
+  demo/
+</code></pre>
+
+    <h2 id="quickstart">3. Quick Start</h2>
+    <ol>
+        <li>
+            <b>Define Routes</b>
+            <pre><code>from enum import Enum
+class CoreRoutes(Enum):
+    MAIN_WINDOW = "core.main_window"
+    SETTINGS_DIALOG = "core.settings_dialog"
+    ABOUT_DIALOG = "core.about_dialog"
+</code></pre>
+        </li>
+        <li>
+            <b>Register UI Components</b>
+            <pre><code>from Navix import navigate
+@navigate(CoreRoutes.MAIN_WINDOW, singleton=True, title="Main Window")
+class MainWindow(QtWidgets.QMainWindow):
+    ...
+</code></pre>
+        </li>
+        <li>
+            <b>Navigation</b>
+            <pre><code>from Navix import UIVoyager
+voyager = UIVoyager()
+main_window = voyager.navigate_to(CoreRoutes.MAIN_WINDOW)
+</code></pre>
+        </li>
+        <li>
+            <b>Data Containers</b>
+            <pre><code>from Navix import container_manager, container_property
+@navigate(CoreRoutes.SETTINGS_DIALOG)
+class SettingsDialog(QtWidgets.QDialog):
+    @container_property(str, "light", "Theme setting")
+    def theme(self): pass
+
+main_container = container_manager(CoreRoutes.SETTINGS_DIALOG)
+main_container.set("theme", "dark")
+theme = main_container.get("theme")
+</code></pre>
+        </li>
+        <li>
+            <b>Builder API</b>
+            <pre><code>from Navix.builders import Navix_app
+app = (Navix_app("MyApp")
+       .framework("PySide6")
+       .routes(CoreRoutes)
+       .main_window(CoreRoutes.MAIN_WINDOW)
+       .import_ui_modules(__name__)
+       .validation().patterns(r'^[a-z_]+\.[a-z_]+$').end()
+       .interceptors().logging().end()
+       .build())
+app.run()
+</code></pre>
+        </li>
+    </ol>
+
+    <h2 id="routing">4. Routing System</h2>
+    <h3>4.1 Enum-based Route Definitions</h3>
+    <pre><code>class AssetRoutes(Enum):
+    ASSET_MANAGER = "asset.asset_manager"
+    ASSET_VIEWER = "asset.asset_viewer"
+    ASSET_EDITOR = "asset.asset_editor"
+</code></pre>
+    <h3>4.2 Route Registration</h3>
+    <ul>
+        <li><code>@navigate(route_enum_member, ...)</code> registers a UI class for a route.</li>
+        <li>Supports singleton, title, meta info, etc.</li>
+    </ul>
+    <h3>4.3 Route Discovery & Merging</h3>
+    <ul>
+        <li>Automatic discovery of route modules (see builder API, <code>import_ui_modules</code>)</li>
+        <li>Conflict detection and unified route enum (see <code>RouteCatalog</code>)</li>
+    </ul>
+    <h3>4.4 RouteCatalog API</h3>
+    <table class="api-table">
+        <tr><th>Method</th><th>Description</th></tr>
+        <tr><td>register_navigator(route, cls, ...)</td><td>Register a UI class for a route</td></tr>
+        <tr><td>get_navigator_info(route)</td><td>Get navigator info for a route</td></tr>
+        <tr><td>list_routes()</td><td>List all registered routes</td></tr>
+        <tr><td>get_ui_class(route)</td><td>Get UI class for a route</td></tr>
+        <tr><td>create_ui_instance(route, **params)</td><td>Create UI instance directly</td></tr>
+    </table>
+
+    <h2 id="navigation">5. Navigation Manager</h2>
+    <h3>5.1 UIVoyager</h3>
+    <ul>
+        <li>Central navigation manager</li>
+        <li>Supports singleton/multi-instance, navigation history, validation, security</li>
+        <li>API: <code>navigate_to</code>, <code>get_current_ui</code>, <code>close_navigation</code>, <code>navigate_back</code>, <code>get_active_navigations</code>, <code>clear_fleet</code></li>
+    </ul>
+    <h3>5.2 Navigation Event Bus</h3>
+    <ul>
+        <li>Events: <code>before_navigate</code>, <code>after_navigate</code>, <code>navigation_failed</code>, <code>before_close</code>, <code>after_close</code></li>
+        <li>Subscribe via <code>navigation_event_bus.subscribe(event, callback)</code></li>
+    </ul>
+    <h3>5.3 Direct Instance Access</h3>
+    <ul>
+        <li><code>get_ui_class(route)</code>: Get UI class for manual instantiation</li>
+        <li><code>create_ui_instance(route, **params)</code>: Create UI instance directly</li>
+    </ul>
+
+    <h2 id="data-containers">6. Data Containers</h2>
+    <ul>
+        <li>
+            <b>Auto-registration:</b> Navix registers a global container for each <code>@navigate</code> UI route (see <code>demo/02_data_container.py</code>).
+        </li>
+        <li>
+            <b>Type-safe declaration:</b> Use <code>@container_property(type, default, desc)</code> in your UI class to declare container properties for IDE completion and type checking.
+        </li>
+        <li>
+            <b>Access:</b> Use <code>container_manager(route_enum_member)</code> or <code>container_manager.module.route.property</code> for type-safe access and manipulation.
+        </li>
+        <li>
+            <b>Features:</b> Module/global data, status monitoring, auto cleanup.
+        </li>
+    </ul>
+    <div class="note">
+        <b>About <code>container_property</code>:</b><br>
+        <code>@container_property(type, default, desc)</code> declares a type-safe field in the container.<br>
+        For example:<br>
+        <code>
+        @container_property(str, "", "Current username")<br>
+        def username(self): pass
+        </code>
+        <br>
+        This enables type hints and documentation in <code>container_manager</code> access.
+    </div>
+    <h3>6.1 API</h3>
+    <table class="api-table">
+        <tr><th>Method</th><th>Description</th></tr>
+        <tr><td>container_manager(route)</td><td>Get container for a route</td></tr>
+        <tr><td>container_manager.module.route.property</td><td>Type-safe property access</td></tr>
+        <tr><td>container_property(type, default, desc)</td><td>Define container property (type hint, doc, IDE support)</td></tr>
+    </table>
+
+    <h2 id="validation-security">7. Validation & Security</h2>
+    <ul>
+        <li>Route and parameter validation via <code>route_validator</code> (see <code>demo/03_validation_security.py</code>)</li>
+        <li>Security validation via <code>security_validator</code> (see <code>demo/03_validation_security.py</code>, <code>demo/06_rbac_enterprise.py</code>)</li>
+        <li>Custom rules and patterns supported</li>
+        <li>RBAC integration for permission control (see <code>demo/06_rbac_enterprise.py</code>)</li>
+    </ul>
+    <h3>7.1 Common Rules</h3>
+    <pre><code>voyager.add_route_pattern(r'^[a-z_]+\.[a-z_]+$')
+voyager.add_parameter_rule('user_id', lambda x: isinstance(x, str) and len(x) > 0)
+voyager.set_security_checker(my_security_func)
+</code></pre>
+
+    <h3>7.2 Validation Rules Usage Example</h3>
+    <pre><code>
+from Navix.validation import (
+    DEFAULT_ROUTE_PATTERNS,
+    RESERVED_ROUTES,
+    COMMON_PARAMETER_RULES,
+    SECURITY_BLOCKED_PATTERNS,
+    validate_user_id,
+    validate_admin_level,
+    validate_asset_id,
+    validate_theme,
+    route_validator,
+    RouteValidationError,
+    ParameterValidationError
+)
+
+# 1. Print default route patterns
+for pattern in DEFAULT_ROUTE_PATTERNS:
+    print(f"Pattern: {pattern}")
+
+# 2. Print reserved routes
+for route in RESERVED_ROUTES:
+    print(f"Reserved: {route}")
+
+# 3. Print common parameter rules
+for param, validator in COMMON_PARAMETER_RULES.items():
+    print(f"{param}: {validator.__name__}")
+
+# 4. Print security blocked patterns
+for pattern in SECURITY_BLOCKED_PATTERNS:
+    print(f"Blocked: {pattern}")
+
+# 5. Use validation functions
+print("validate_user_id('bob'):", validate_user_id("bob"))
+print("validate_admin_level(11):", validate_admin_level(11))
+print("validate_asset_id('abc'):", validate_asset_id("abc"))
+print("validate_theme('auto'):", validate_theme("auto"))
+
+# 6. Use route_validator for validation
+try:
+    route_validator.add_route_pattern(DEFAULT_ROUTE_PATTERNS[0])
+    route_validator.validate_route("core.main_window")
+    print("Route 'core.main_window' is valid.")
+except RouteValidationError as e:
+    print(f"Route validation failed: {e}")
+
+try:
+    route_validator.add_parameter_rule('user_id', validate_user_id)
+    route_validator.validate_params({'user_id': 'alice'})
+    print("Parameter 'user_id' is valid.")
+except ParameterValidationError as e:
+    print(f"Parameter validation failed: {e}")
+
+# 7. Reserved route check
+try:
+    route_validator.validate_route("system.error")
+except RouteValidationError as e:
+    print(f"Reserved route check: {e}")
+    </code></pre>
+
+    <h2 id="builder-api">8. Builder API</h2>
+    <ul>
+        <li>Fluent, chainable configuration for all aspects of the app (see <code>demo/05_builder_full.py</code>)</li>
+        <li>Recommended for team projects</li>
+        <li>Entry: <code>from Navix.builders import Navix_app</code></li>
+        <li>Sub-builders: <code>validation()</code>, <code>interceptors()</code>, <code>containers()</code>, <code>navigation()</code></li>
+        <li>Hooks: <code>startup_hook</code>, <code>shutdown_hook</code></li>
+        <li>Finalize: <code>build()</code> → <code>app.run()</code></li>
+    </ul>
+    <h3>8.1 Example</h3>
+    <pre><code>app = (Navix_app("MyApp")
+   .framework("PySide6")
+   .routes(CoreRoutes)
+   .main_window(CoreRoutes.MAIN_WINDOW)
+   .import_ui_modules(__name__)
+   .validation().patterns(r'^[a-z_]+\.[a-z_]+$').end()
+   .interceptors().logging().end()
+   .build())
+app.run()
+</code></pre>
+
+    <h2 id="adapters">9. GUI Adapters</h2>
+    <ul>
+        <li>Automatic framework detection (<code>GUIAdapter.detect_framework()</code>) using config.json mapping (see <code>demo/07_adapter_framework.py</code>)</li>
+        <li>Unified widget wrapper interface (<code>WidgetWrapper</code>), requires <code>framework_name</code> for multi-framework support</li>
+        <li>Supports PyQt, PySide, wxPython, tkinter (see config.json for mapping)</li>
+        <li>Custom adapters can be implemented for new frameworks</li>
+        <li><b>Framework adapter interface:</b> <code>IGUIFrameworkAdapter</code> defines how to wrap widgets and check compatibility.</li>
+    </ul>
+    <div class="note">
+        <b>Example: Using WidgetWrapper and IGUIFrameworkAdapter</b><br>
+        <pre><code>
+from Navix.adapters.widget_wrapper import WidgetWrapper, WidgetProtocol
+from Navix.interfaces.abc_interfaces import IGUIFrameworkAdapter
+
+class DummyWidget:
+    def show(self): print("show called")
+    def close(self): print("close called")
+    def isHidden(self): return False
+    def setParent(self, parent): print(f"setParent called with {parent}")
+    def raise_(self): print("raise_ called")
+    def activateWindow(self): print("activateWindow called")
+
+dummy = DummyWidget()
+
+# Check protocol compliance
+print(isinstance(dummy, WidgetProtocol))  # True
+
+# Wrap and use (specify framework name)
+wrapper = WidgetWrapper(dummy, framework="dummy")
+wrapper.show()
+wrapper.close()
+
+# Adapter usage
+class DummyFrameworkAdapter(IGUIFrameworkAdapter):
+    def detect_framework(self): return "dummy"
+    def create_widget_wrapper(self, widget): return WidgetWrapper(widget, framework="dummy")
+    def is_widget_compatible(self, widget): return True
+
+adapter = DummyFrameworkAdapter()
+wrapped = adapter.create_widget_wrapper(dummy)
+wrapped.show()
+        </code></pre>
+    </div>
+
+    <h2 id="interfaces">10. Interfaces & Extensibility</h2>
+    <ul>
+        <li>Protocols: <code>IRouteValidator</code>, <code>INavigationInterceptor</code>, <code>IUILifecycleManager</code>, <code>IWidgetWrapper</code>, <b><code>WidgetProtocol</code></b></li>
+        <li>Abstract base classes: <code>IRouteRegistry</code>, <code>IGUIFrameworkAdapter</code></li>
+        <li>Custom interceptors, validators, adapters can be implemented (see <code>demo/08_protocol_extension.py</code>)</li>
+    </ul>
+    <div class="note">
+        <b>Tip:</b> To implement a new GUI framework adapter, inherit from <code>IGUIFrameworkAdapter</code> and implement <code>create_widget_wrapper</code>, <code>detect_framework</code>, and <code>is_widget_compatible</code>.
+    </div>
+
+    <h2 id="interceptors">11. Interceptors</h2>
+    <ul>
+        <li>Built-in: Logging, Security, Performance, Rate Limit</li>
+        <li>Custom interceptors supported (must implement <code>INavigationInterceptor</code>) (see <code>demo/04_interceptor_eventbus.py</code>, <code>demo/08_protocol_extension.py</code>)</li>
+        <li>Register via <code>RouteCatalog.add_interceptor()</code> or builder API</li>
+    </ul>
+    <h3>11.1 Example</h3>
+    <pre><code>from Navix.navigation.interceptors import logging_interceptor, security_interceptor
+RouteCatalog.add_interceptor(logging_interceptor)
+RouteCatalog.add_interceptor(security_interceptor)
+</code></pre>
+
+    <h2 id="api-reference">12. API Reference</h2>
+    <h3>12.1 Core Classes & Functions</h3>
+    <table class="api-table">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Parameters</th>
+            <th>Returns</th>
+            <th>Example</th>
+        </tr>
+        <tr>
+            <td>navigate(route, ...)</td>
+            <td>Decorator to register a UI class for a route.</td>
+            <td>route: Enum/str, singleton: bool, title: str, meta: dict</td>
+            <td>Class decorator</td>
+            <td>
+<pre><code>@navigate(CoreRoutes.MAIN_WINDOW, singleton=True)
+class MainWindow(QtWidgets.QMainWindow): ...</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>UIVoyager</td>
+            <td>Central navigation manager for UI creation and navigation.</td>
+            <td>enable_validation: bool, enable_security: bool</td>
+            <td>UIVoyager instance</td>
+            <td>
+<pre><code>voyager = UIVoyager()
+win = voyager.navigate_to(CoreRoutes.MAIN_WINDOW)</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>container_manager(route)</td>
+            <td>Get the data container for a route.</td>
+            <td>route: Enum/str</td>
+            <td>Container instance</td>
+            <td>
+<pre><code>container = container_manager(CoreRoutes.SETTINGS_DIALOG)
+container.set("theme", "dark")</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>RouteCatalog</td>
+            <td>Central registry for all routes and UI classes.</td>
+            <td>-</td>
+            <td>Class</td>
+            <td>
+<pre><code>RouteCatalog.list_routes()</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>setup_navigator(routes_enum)</td>
+            <td>Initialize the route registry with an Enum.</td>
+            <td>routes_enum: Enum</td>
+            <td>None</td>
+            <td>
+<pre><code>setup_navigator(CoreRoutes)</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>get_ui_class(route)</td>
+            <td>Get the UI class for a route.</td>
+            <td>route: Enum/str</td>
+            <td>UI class</td>
+            <td>
+<pre><code>cls = get_ui_class(CoreRoutes.MAIN_WINDOW)</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>create_ui_instance(route, **params)</td>
+            <td>Create a UI instance directly without navigation.</td>
+            <td>route: Enum/str, **params</td>
+            <td>UI instance</td>
+            <td>
+<pre><code>win = create_ui_instance(CoreRoutes.MAIN_WINDOW)</code></pre>
+            </td>
+        </tr>
+    </table>
+
+    <h3>12.2 Validation & Security</h3>
+    <table class="api-table">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Parameters</th>
+            <th>Returns</th>
+            <th>Example</th>
+        </tr>
+        <tr>
+            <td>route_validator.add_route_pattern(pattern)</td>
+            <td>Add a regex pattern for route validation.</td>
+            <td>pattern: str</td>
+            <td>None</td>
+            <td>
+<pre><code>route_validator.add_route_pattern(r'^[a-z_]+\.[a-z_]+$')</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>route_validator.add_parameter_rule(name, func)</td>
+            <td>Add a parameter validation rule.</td>
+            <td>name: str, func: callable</td>
+            <td>None</td>
+            <td>
+<pre><code>route_validator.add_parameter_rule('user_id', lambda x: ...)</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>security_validator.set_permission_checker(func)</td>
+            <td>Set a custom security checker function.</td>
+            <td>func: callable</td>
+            <td>None</td>
+            <td>
+<pre><code>security_validator.set_permission_checker(my_func)</code></pre>
+            </td>
+        </tr>
+    </table>
+
+    <h3>12.3 Builder API</h3>
+    <table class="api-table">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Parameters</th>
+            <th>Returns</th>
+            <th>Example</th>
+        </tr>
+        <tr>
+            <td>Navix_app(name)</td>
+            <td>Create a new application builder.</td>
+            <td>name: str</td>
+            <td>NavixAppBuilder</td>
+            <td>
+<pre><code>app = Navix_app("MyApp")</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>.framework(name)</td>
+            <td>Set the GUI framework.</td>
+            <td>name: str</td>
+            <td>self</td>
+            <td>
+<pre><code>.framework("PySide6")</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>.routes(enum)</td>
+            <td>Register route Enum.</td>
+            <td>enum: Enum</td>
+            <td>self</td>
+            <td>
+<pre><code>.routes(CoreRoutes)</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>.main_window(route)</td>
+            <td>Set the main window route.</td>
+            <td>route: Enum</td>
+            <td>self</td>
+            <td>
+<pre><code>.main_window(CoreRoutes.MAIN_WINDOW)</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>.import_ui_modules(...)</td>
+            <td>Import UI modules for registration.</td>
+            <td>module paths</td>
+            <td>self</td>
+            <td>
+<pre><code>.import_ui_modules('myapp.ui_parts.core_ui')</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>.validation()</td>
+            <td>Enter validation builder.</td>
+            <td>-</td>
+            <td>ValidationBuilder</td>
+            <td>
+<pre><code>.validation().patterns(...).end()</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>.interceptors()</td>
+            <td>Enter interceptor builder.</td>
+            <td>-</td>
+            <td>InterceptorBuilder</td>
+            <td>
+<pre><code>.interceptors().logging().end()</code></pre>
+            </td>
+        </tr>
+        <tr>
+            <td>.build()</td>
+            <td>Finalize and get NavixApplication.</td>
+            <td>-</td>
+            <td>NavixApplication</td>
+            <td>
+<pre><code>app = builder.build()</code></pre>
+            </td>
+        </tr>
+    </table>
+
+    <h3>12.4 Exception Classes</h3>
+    <table class="api-table">
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        <tr>
+            <td>NavixError</td>
+            <td>Base exception for all Navix errors.</td>
+        </tr>
+        <tr>
+            <td>NavigationError</td>
+            <td>Raised for navigation-related errors.</td>
+        </tr>
+        <tr>
+            <td>RouteError</td>
+            <td>Raised for route registration or lookup errors.</td>
+        </tr>
+        <tr>
+            <td>RouteNotFoundError</td>
+            <td>Raised when a route is not found.</td>
+        </tr>
+        <tr>
+            <td>RouteConflictError</td>
+            <td>Raised when route conflicts are detected.</td>
+        </tr>
+        <tr>
+            <td>FrameworkError</td>
+            <td>Raised for GUI framework errors.</td>
+        </tr>
+        <tr>
+            <td>ValidationError</td>
+            <td>Raised for validation errors.</td>
+        </tr>
+    </table>
+
+    <h2 id="faq">13. FAQ</h2>
+    <dl>
+        <dt>How do I add a new route?</dt>
+        <dd>Add it to your Enum, decorate your UI class with <code>@navigate</code>, and import the module.</dd>
+        <dt>How do I share data between UIs?</dt>
+        <dd>Use <code>container_manager</code> and <code>@container_property</code> for type-safe data sharing.</dd>
+        <dt>How do I enforce singleton windows?</dt>
+        <dd>Use <code>@navigate(..., singleton=True)</code> on your UI class.</dd>
+        <dt>How do I add validation or security rules?</dt>
+        <dd>Use the Builder API or call <code>voyager.add_route_pattern()</code> and <code>voyager.set_security_checker()</code>.</dd>
+        <dt>How do I support a new GUI framework?</dt>
+        <dd>Extend <code>FrameworkDetector</code> and <code>WidgetWrapper</code> in <code>Navix.adapters</code>.</dd>
+        <dt>Can I use Navix in Maya/Houdini/Nuke?</dt>
+        <dd>Yes, as long as the Python environment supports one of the listed GUI frameworks.</dd>
+        <dt>Is Navix thread-safe?</dt>
+        <dd>UI operations must always be performed in the main thread, as with all Python GUI frameworks.</dd>
+        <dt>How do I debug route registration?</dt>
+        <dd>Use <code>RouteCatalog.list_routes()</code> and <code>RouteCatalog.get_navigator_info(route)</code> to inspect registered routes.</dd>
+    </dl>
+
+    <h2 id="examples">14. Examples</h2>
+    <ul>
+        <li><b>Simple Navigation:</b> <code>demo/01_simple_navigation.py</code></li>
+        <li><b>Data Container:</b> <code>demo/02_data_container.py</code></li>
+        <li><b>Validation & Security:</b> <code>demo/03_validation_security.py</code></li>
+        <li><b>Interceptor & Event Bus:</b> <code>demo/04_interceptor_eventbus.py</code></li>
+        <li><b>Full Builder API:</b> <code>demo/05_builder_full.py</code></li>
+        <li><b>RBAC Enterprise Security:</b> <code>demo/06_rbac_enterprise.py</code></li>
+        <li><b>Adapter Framework:</b> <code>demo/07_adapter_framework.py</code></li>
+        <li><b>Protocol & Extension:</b> <code>demo/08_protocol_extension.py</code></li>
+    </ul>
+    <pre><code># Run the full demo app:
+python -m Navix.demo.05_builder_full
+</code></pre>
+
+    <h2 id="license">15. License</h2>
+    <div class="note">
+        <b>Usage Notice:</b><br>
+        Navix UI Navigator is <b>free for any user</b> (individuals, companies, organizations) to use, modify, and distribute for any purpose, including commercial use.<br>
+        <b>No payment is required.</b> You only need to retain this license notice and author attribution in your product or documentation.
+    </div>
+    <pre>
+MIT License
+
+Copyright (c) 2024 Xiang Haizheng
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+    </pre>
+</main>
+</body>
+</html>
