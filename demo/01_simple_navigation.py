@@ -23,17 +23,24 @@ from PySide6 import QtCore
 
 voyager = None
 
+# Additional route enum
 # Route Enum definition
+# Best practice: Use descriptive names and consistent naming conventions (UPPERCASE with underscores).
+# In production, define routes in a separate module for better team management and scalability
 class SimpleRoutes(Enum):
     MAIN  = "simple.main"
     CHILD = "simple.child"
-
-# Additional route enum
 class ExtraSimpleRoutes(Enum):
     DASHBOARD = "extra.dashboard"
     PROFILE   = "extra.profile"
     HELP      = "extra.help"
-
+    
+# Register main window route
+# @navigate decorator registers the UI class for a route.
+# Parameters:
+#   singleton=True: Enforces single instance for this window.
+#   title: Sets window title.
+#   metadata: Stores extra info (e.g., icon path, config).
 @navigate(SimpleRoutes.MAIN, singleton=True, title="Main Window")
 class MainWindow(QtWidgets.QWidget):
     def __init__(self, **kwargs):
@@ -68,7 +75,6 @@ class MainWindow(QtWidgets.QWidget):
         self.btn_help.clicked.connect(self.open_help)
 
     def open_child_window(self):
-        global voyager
         self.child_window = voyager.navigate_to(
             SimpleRoutes.CHILD,
             parent=self.childDock,
@@ -78,6 +84,10 @@ class MainWindow(QtWidgets.QWidget):
             margin=(5, 5, 5, 5),
         )
         if self.child_window:
+            # If voyager returns a wrapper, use .native_widget; otherwise, use the instance directly.
+            #  wrapper:
+            #  widget = getattr(self.child_window, "native_widget", self.child_window)
+            #  self.childDock_layout.addWidget(widget)
             self.childDock_layout.addWidget(self.child_window)
 
     def open_dashboard(self):
@@ -152,9 +162,17 @@ class HelpWindow(QtWidgets.QWidget):
         self.setLayout(layout)
 
 def main():
+    """
+    Application entry point.
+    In production, call setup_navigator for each route Enum to register all routes.
+    Example: setup_navigator(AssetRoutes), setup_navigator(DataRoutes), etc.
+
+    Summary:
+    - @navigate: Registers UI class for a route.
+    - setup_navigator: Registers all routes from an Enum for global management and validation.
+    - navigate_to: Navigates to a registered UI.
+    """
     global voyager 
-    # Setup navigator for both SimpleRoutes and ExtraSimpleRoutes
-    # This allows navigation to both sets of routes
     setup_navigator(SimpleRoutes)
     setup_navigator(ExtraSimpleRoutes)
     app     = QtWidgets.QApplication([])
