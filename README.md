@@ -12,8 +12,10 @@ Modular, Type-Safe UI Routing & Navigation Framework for Python Desktop Applicat
 - Unified widget wrappers for major GUI frameworks
 - Extensible via protocols, ABCs, custom interceptors
 - Rich documentation and examples
+- **Designed for professional teams and enterprise applications.**
 
-## Quick Start
+## Quick Start  
+_Basic usage: minimal navigation setup._
 
 ```python
 from enum import Enum
@@ -37,11 +39,13 @@ win.show()
 app.exec()
 ```
 
-## Advanced Features Example
+## Advanced Features Example  
+_Type-safe data container and validation usage._
 
 ```python
 from Navix import container_manager, container_property, route_validator, UIVoyager, navigate
-...
+from enum import Enum
+from PySide6 import QtWidgets
 
 class DataRoutes(Enum):
     SETTINGS = "data.settings"
@@ -62,23 +66,70 @@ container.set("theme", "dark")
 theme = container.get("theme")
 ```
 
-## Builder API Example
+## Data Container Property Example  
+_Declare type-safe container properties for IDE completion and documentation._
+
+```python
+from Navix import container_manager, container_property, navigate, setup_navigator
+from enum import Enum
+from PySide6 import QtWidgets
+
+class PropertyRoutes(Enum):
+    SETTINGS = "property.settings"
+
+@navigate(PropertyRoutes.SETTINGS)
+class SettingsDialog(QtWidgets.QDialog):
+    @container_property(str, "light", "Theme setting")
+    def theme(self): pass
+
+    @container_property(int, 0, "Admin level")
+    def admin_level(self): pass
+
+def main():
+    setup_navigator(PropertyRoutes)
+    app = QtWidgets.QApplication([])
+    container = container_manager(PropertyRoutes.SETTINGS)
+    container.set("theme", "dark")
+    container.set("admin_level", 5)
+    print(container.get("theme"))         # IDE type hint: str
+    print(container.get("admin_level"))   # IDE type hint: int
+    win = SettingsDialog()
+    win.show()
+    app.exec()
+
+if __name__ == "__main__":
+    main()
+```
+
+## Builder API Example  
+_Enterprise builder API usage for team configuration and governance._
 
 ```python
 from Navix.builders import Navix_app
-...
+from enum import Enum
+from PySide6 import QtWidgets
+
 class BuilderRoutes(Enum):
     MAIN = "builder.main"
     SETTINGS = "builder.settings"
 
 @navigate(BuilderRoutes.MAIN)
 class MainWindow(QtWidgets.QWidget):
-    ...
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Builder Main Window")
+
 @navigate(BuilderRoutes.SETTINGS)
 class SettingsDialog(QtWidgets.QDialog):
-    ...
-def startup_hook(app): ...
-def shutdown_hook(app):...
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle("Settings Dialog")
+
+def startup_hook(app):
+    print("[Startup Hook] Application is starting...")
+
+def shutdown_hook(app):
+    print("[Shutdown Hook] Application is shutting down...")
 
 app = (
     Navix_app("Navix Builder Demo")
@@ -94,7 +145,16 @@ app = (
         .parameters("theme", lambda x: x in ("light", "dark"))
         .security_checker(lambda route, params, param_names: True)
         .end()
-    ...
+    .interceptors()
+        .logging()
+        .performance()
+        .end()
+    .containers()
+        .global_data({"theme": "light"})
+        .end()
+    .navigation()
+        .max_history(50)
+        .end()
     .build()
 )
 app.run()
