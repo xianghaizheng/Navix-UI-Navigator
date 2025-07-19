@@ -66,7 +66,6 @@ theme = container.get("theme")
 ## Documentation
 - [Demo Examples](demo/)
 - [Full Documentation (HTML, open in browser)](docs/qmx_full_documentation.html)
-  <!-- Or use GitHub Pages for online preview: https://你的用户名.github.io/你的仓库名/qmx_full_documentation.html -->
 
 ## License
 
