@@ -27,7 +27,7 @@ class CoreRoutes(Enum):
 
 @navigate(CoreRoutes.MAIN)
 class MainWindow(QtWidgets.QWidget):
-    def __init__(self):
+    def __init__(self, **kwargs):
         super().__init__()
         self.setWindowTitle("Navix Main Window")
 
