@@ -27,7 +27,9 @@ class DataReference(Generic[T]):
         """
         from .core import container_manager
         container = container_manager.get_container(self._route_key)
-        return container.get_data(self._property_name)
+        if container is None:
+            raise RuntimeError(f"Container not found for route: {self._route_key}")
+        return container.get(self._property_name)
     
     def set(self, value: T):
         """
@@ -37,7 +39,9 @@ class DataReference(Generic[T]):
         """
         from .core import container_manager
         container = container_manager.get_container(self._route_key)
-        container.set_data(self._property_name, value)
+        if container is None:
+            raise RuntimeError(f"Container not found for route: {self._route_key}")
+        container.set(self._property_name, value)
     
     @property
     def value(self) -> Optional[T]:

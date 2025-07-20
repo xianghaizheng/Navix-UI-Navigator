@@ -389,17 +389,24 @@ class DataContainerManager:
     def get_container(self, route: Union[str, Enum]) -> RouteDataContainer:
         """Get route data container"""
         route_key = route.value if isinstance(route, Enum) else route
-        
+
         # Direct route container access
         if route_key in self._route_containers:
             return self._route_containers[route_key]
-        
+
         # Fallback to module-based access
-        module_name = self._route_registry.get(route_key, route_key.split('.')[0])
-        
+        module_name = self._route_registry.get(route_key, None)
+        if module_name is None:
+            # Only fallback if route_key contains a dot
+            if '.' in route_key:
+                module_name = route_key.split('.')[0]
+            else:
+                # If no module can be determined, raise error
+                raise RuntimeError(f"Cannot determine module name for route: {route_key}")
+
         if module_name not in self._modules:
             self._modules[module_name] = ModuleDataContainer(module_name)
-        
+
         container = self._modules[module_name].get_route_container(route_key)
         self._route_containers[route_key] = container  # Cache for future access
         return container

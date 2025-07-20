@@ -111,17 +111,22 @@ from PySide6 import QtWidgets
 
 class BuilderRoutes(Enum):
     MAIN = "builder.main"
+
+class SettingRoutes(Enum):
     SETTINGS = "builder.settings"
 
 @navigate(BuilderRoutes.MAIN)
 class MainWindow(QtWidgets.QWidget):
-    def __init__(self):
+    def __init__(self, **kwargs):
         super().__init__()
         self.setWindowTitle("Builder Main Window")
+        # add a button to connect a function
+        # and use voyager.navigate_to() to open the settings dialog
+        # ....
 
-@navigate(BuilderRoutes.SETTINGS)
+@navigate(SettingRoutes.SETTINGS)
 class SettingsDialog(QtWidgets.QDialog):
-    def __init__(self):
+    def __init__(self, **kwargs):
         super().__init__()
         self.setWindowTitle("Settings Dialog")
 
@@ -131,17 +136,19 @@ def startup_hook(app):
 def shutdown_hook(app):
     print("[Shutdown Hook] Application is shutting down...")
 
+voyager = UIVoyager()
 app = (
     Navix_app("Navix Builder Demo")
     .config(theme="light")
     .startup_hook(startup_hook)
     .shutdown_hook(shutdown_hook)
-    .framework("PySide6")
+    .auto_detect_framework()
     .routes(BuilderRoutes)
+    .routes(SettingRoutes)
     .main_window(BuilderRoutes.MAIN)
     .import_ui_modules(__name__)
     .validation()
-        .patterns(r'^builder\.[a-z_]+$')
+        .patterns(r'^builder\.[a-z_]+$', r'^extra\.[a-z_]+$')
         .parameters("theme", lambda x: x in ("light", "dark"))
         .security_checker(lambda route, params, param_names: True)
         .end()
@@ -156,7 +163,8 @@ app = (
         .max_history(50)
         .end()
     .build()
-)
+    )
+app.voyager = voyager
 app.run()
 ```
 

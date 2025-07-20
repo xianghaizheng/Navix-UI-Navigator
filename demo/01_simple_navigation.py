@@ -91,19 +91,16 @@ class MainWindow(QtWidgets.QWidget):
             self.childDock_layout.addWidget(self.child_window)
 
     def open_dashboard(self):
-        global voyager
         win = voyager.navigate_to(ExtraSimpleRoutes.DASHBOARD)
         if win:
             win.show()
 
     def open_profile(self):
-        global voyager
         win = voyager.navigate_to(ExtraSimpleRoutes.PROFILE)
         if win:
             win.show()
 
     def open_help(self):
-        global voyager
         win = voyager.navigate_to(ExtraSimpleRoutes.HELP)
         if win:
             win.show()
